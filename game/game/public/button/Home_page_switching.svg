@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_1" data-name="图层 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 524 524">
+  <defs>
+    <style>
+      .cls-1 {
+        stroke: #b0b0b0;
+        stroke-width: 24px;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4 {
+        stroke-miterlimit: 10;
+      }
+
+      .cls-1, .cls-3 {
+        fill: none;
+      }
+
+      .cls-2 {
+        fill: #2c2e32;
+        stroke: #231815;
+      }
+
+      .cls-3 {
+        stroke-width: 36px;
+      }
+
+      .cls-3, .cls-4 {
+        stroke: #fff;
+      }
+
+      .cls-4 {
+        fill: #fff;
+        stroke-width: 25px;
+      }
+    </style>
+  </defs>
+  <circle class="cls-2" cx="262" cy="262" r="250"/>
+  <circle class="cls-1" cx="262" cy="262" r="250"/>
+  <path class="cls-3" d="M319.77,125.25c1.05.44,2.09.9,3.13,1.37"/>
+  <g>
+    <path class="cls-3" d="M113.59,262c0-81.96,66.45-148.41,148.41-148.41,20.49,0,40.01,4.15,57.77,11.66"/>
+    <polygon class="cls-4" points="113.59 319.12 139.57 274.12 87.61 274.12 113.59 319.12"/>
+  </g>
+  <g>
+    <path class="cls-3" d="M407.86,250.97c0,81.96-66.45,148.41-148.41,148.41-20.49,0-40.01-4.15-57.77-11.66"/>
+    <polygon class="cls-4" points="407.86 193.85 381.88 238.85 433.84 238.85 407.86 193.85"/>
+  </g>
+</svg>

@@ -1,0 +1,94 @@
+-- 1. 创建数据库 TBS（指定常用字符集 utf8mb4，可按需调整）
+CREATE DATABASE IF NOT EXISTS `TBS` 
+  CHARACTER SET utf8mb4 
+  COLLATE utf8mb4_general_ci;
+
+-- 2. 创建用户 TBS，设置密码（允许任意主机连接，可改为 localhost 限制本地）
+CREATE USER IF NOT EXISTS 'TBS'@'%' IDENTIFIED BY 'Aa15818908916';
+
+-- 3. 将数据库 TBS 的全部权限授予用户 TBS
+GRANT ALL PRIVILEGES ON `TBS`.* TO 'TBS'@'%';
+
+-- 4. 刷新权限，使设置立即生效
+FLUSH PRIVILEGES;
+
+-- 切换到 TBS 数据库（确保后续操作在正确数据库下）
+USE `TBS`;
+
+-- 创建 roles 表
+CREATE TABLE IF NOT EXISTS `roles` (
+  `role_id`          INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '角色编号（主键，自增）',
+  `role_name`        VARCHAR(50)  NOT NULL                COMMENT '角色名称',
+  `hp`               INT UNSIGNED NOT NULL DEFAULT 0      COMMENT '生命值',
+  `hp_max`           INT UNSIGNED NOT NULL DEFAULT 0      COMMENT '生命上限',
+  `attack`           INT UNSIGNED NOT NULL DEFAULT 0      COMMENT '攻击力',
+  `skill_id`         VARCHAR(50)          DEFAULT NULL    COMMENT '技能字段（技能ID或代码）',
+  `passive_id`       VARCHAR(50)          DEFAULT NULL    COMMENT '被动字段（被动技能ID或代码）',
+  `skill_description` TEXT                                 COMMENT '技能描述',
+  `passive_description` TEXT                               COMMENT '被动描述',
+  `remark` TEXT 						 COMMENT '备注',
+  `portrait_id`      VARCHAR(50)          DEFAULT NULL    COMMENT '立绘编号（资源标识）',
+  PRIMARY KEY (`role_id`),
+  UNIQUE KEY `uk_role_name` (`role_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='角色表';
+
+CREATE TABLE IF NOT EXISTS `users` (
+  `id`                INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '用户ID（主键）',
+  `username`          VARCHAR(50)  NOT NULL COMMENT '用户名',
+  `password`          VARCHAR(255) NOT NULL COMMENT '密码哈希',
+  `email`             VARCHAR(100) DEFAULT NULL COMMENT '绑定邮箱',
+  `avatar_id`         INT UNSIGNED DEFAULT NULL COMMENT '头像ID',
+  `assistant_id`      INT UNSIGNED DEFAULT NULL COMMENT '助理ID',
+  `material_pack_id`  VARCHAR(64)  DEFAULT NULL COMMENT '材质包ID',
+  `background_id`     VARCHAR(50)  DEFAULT NULL COMMENT '主页背景图片ID',
+  `background_music`  VARCHAR(255) DEFAULT NULL COMMENT '主页背景音乐',  -- ✅ 新增字段
+  `total_battles`     INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '总战斗场次',
+  `win_battles`       INT UNSIGNED NOT NULL DEFAULT 0 COMMENT '胜利场次',
+  `status`            TINYINT      NOT NULL DEFAULT 1 COMMENT '状态：0-禁用 1-正常 2-邮箱未验证',
+  `email_verified`    TINYINT(1)   NOT NULL DEFAULT 0 COMMENT '邮箱是否已验证',
+  `reset_token`       VARCHAR(64)  DEFAULT NULL COMMENT '密码重置令牌',
+  `token_expires_at`  DATETIME     DEFAULT NULL COMMENT '令牌过期时间',
+  `last_login_at`     DATETIME     DEFAULT NULL COMMENT '最后登录时间',
+  `last_login_ip`     VARCHAR(45)  DEFAULT NULL COMMENT '最后登录IP',
+  `created_at`        DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '注册时间',
+  `updated_at`        DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_username` (`username`),
+  UNIQUE KEY `uk_email` (`email`),
+  KEY `idx_reset_token` (`reset_token`),
+  KEY `idx_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='用户表';
+
+-- 在 MySQL 中执行
+CREATE TABLE room_invitation (
+  id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  room_id     INT UNSIGNED NOT NULL COMMENT '房间ID',
+  from_user   INT UNSIGNED NOT NULL COMMENT '邀请方',
+  to_user     INT UNSIGNED NOT NULL COMMENT '被邀请方',
+  status      TINYINT DEFAULT 0 COMMENT '0=待确认 1=已接受 2=已拒绝',
+  created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_to_user (to_user, status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE room_invitation
+  ADD COLUMN host_ready TINYINT DEFAULT 0,
+  ADD COLUMN guest_ready TINYINT DEFAULT 0;
+
+ALTER TABLE room_invitation 
+ADD COLUMN host_picks JSON DEFAULT NULL COMMENT '房主选的角色ID数组',
+ADD COLUMN guest_picks JSON DEFAULT NULL COMMENT '被邀请方选的角色ID数组',
+ADD COLUMN pick_phase INT DEFAULT 0 COMMENT '0=未开始 1=选人中 2=完成';
+
+CREATE TABLE `friend` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `user_id` int unsigned NOT NULL COMMENT '发起方',
+  `friend_id` int unsigned NOT NULL COMMENT '接收方',
+  `status` int NOT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_user_friend` (`user_id`,`friend_id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_friend_id` (`friend_id`),
+  KEY `idx_status` (`status`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;

@@ -1,0 +1,58 @@
+后端运行在30083端口
+
+云服务器部署：
+记得将后端的application.properties中的运行端口改成30083
+
+Bash
+
+# 1. 创建 systemd 服务文件
+sudo nano /etc/systemd/system/tbs.service
+粘贴以下内容（把两处 /path/to/Game 换成实际路径）：
+
+
+ini
+
+[Unit]
+Description=TBS Game Server
+After=network.target mysql.service
+
+[Service]
+User=root
+WorkingDirectory=/home/sjd/home/game/Game
+ExecStart=/usr/bin/java -jar /home/sjd/home/game/Game/target/team-battle-simulator-1.0.0.jar
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+然后：
+
+
+Bash
+
+# 2. 重载 systemd 配置
+sudo systemctl daemon-reload
+
+# 3. 设置开机自启
+sudo systemctl enable tbs
+
+# 4. 启动服务
+sudo systemctl start tbs
+
+# 5. 查看状态（确认 running）
+sudo systemctl status tbs
+
+# 6. 验证接口
+curl http://localhost:30083
+
+# 7. 实时查看日志（Ctrl+C 退出）
+journalctl -u tbs -f
+以后管理：
+
+
+Bash
+
+sudo systemctl stop tbs      # 停止
+sudo systemctl restart tbs   # 重启
+sudo systemctl status tbs    # 状态
+journalctl -u tbs -n 50      # 最近 50 行日志

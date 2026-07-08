@@ -1,0 +1,56 @@
+第一步：改 API 地址
+已Edited 1 files
+
+// request.js
+// Apply
+// import axios from 'axios'
+// const service = axios.create({
+//   baseURL: 'http://localhost:30083/api',
+//   timeout: 5000
+// })
+// // 请求拦截器
+
+
+第二步：构建
+
+Bash
+
+cd /home/sjd/home/game/Game/admin-ui
+
+# 安装依赖（如果还没装）
+npm install
+
+# 构建
+npm run build
+第三步：创建 systemd 服务
+
+Bash
+
+sudo nano /etc/systemd/system/tbs-admin.service
+
+ini
+
+[Unit]
+Description=TBS Admin UI
+After=network.target tbs.service
+
+[Service]
+User=root
+WorkingDirectory=/home/sjd/home/game/Game/admin-ui
+ExecStart=/usr/local/bin/npx serve -s dist -l 30084
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+第四步：启动
+
+Bash
+
+sudo systemctl daemon-reload
+sudo systemctl enable tbs-admin
+sudo systemctl start tbs-admin
+sudo systemctl status tbs-admin
+
+# 开放端口
+sudo ufw allow 30084/tcp

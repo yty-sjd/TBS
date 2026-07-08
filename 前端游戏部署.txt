@@ -1,0 +1,127 @@
+需要改 6 个文件：API 地址、4 个 WebSocket 地址、CORS。
+
+第一步：改 API 地址
+已Edited 1 files
+
+request.js
+Apply
+import axios from 'axios'
+import { ElMessage } from 'element-plus'
+const service = axios.create({
+  baseURL: 'http://42.121.221.244:30083/api',
+  timeout: 60000
+})
+// 请求拦截器
+思考
+Now the 4 WebSocket changes. Let me read each file to get the exact context.
+
+第二步：改 4 个 WebSocket 地址（:8080 → :30083）
+已Edited 4 files
+
+HomePage.vue
+Apply
+let roomWs = null
+function connectRoomWs() {
+  if (roomWs && roomWs.readyState === WebSocket.OPEN) return
+  roomWs = new WebSocket(`ws://${location.hostname}:30083/ws/game`)
+  roomWs.onopen = () => {
+    roomWs.send(JSON.stringify({
+      type: 'JOIN_ROOM', roomId: currentRoomId.value, userId: userId.value,
+      side: roomRole.value === 'host' ? 0 : 1, username: username.value,
+
+PickPhase.vue
+Apply
+  myRosterConfirmed.value = true
+}
+function connect() {
+  ws = new WebSocket(`ws://${location.hostname}:30083/ws/game`)
+  ws.onopen = () => {
+    ws.send(JSON.stringify({ type: 'JOIN_ROOM', roomId: roomId.value, userId: userId.value, username: myUsername.value, side: mySide.value }))
+  }
+  ws.onmessage = (e) => {
+
+PositionAdjust.vue
+Apply
+  announceMsg.value = '已确认位置，等待对方...'
+}
+function connect() {
+  ws = new WebSocket(`ws://${location.hostname}:30083/ws/game`)
+  ws.onopen = () => {
+    ws.send(JSON.stringify({ type: 'JOIN_ROOM', roomId: roomId.value, userId: userId.value, username: myUsername.value, side: mySide.value }))
+  }
+  ws.onmessage = (e) => {
+
+BattleLogViewer.vue
+Apply
+function connectBattleWs() {
+  if (!roomId.value || !userId.value) {
+    return
+  }
+  battleWs = new WebSocket(`ws://${location.hostname}:30083/ws/game`)
+  battleWs.onopen = () => {
+    battleWs.send(JSON.stringify({
+      type: 'JOIN_ROOM', roomId: roomId.value, userId: userId.value, side: mySide.value, username: gameState.myUsername
+    }))
+思考
+Now the CORS config needs to add 30085.
+
+第三步：CORS 添加 30085
+已Edited 2 files, Read 1 files
+所有 diff 汇总：
+
+文件	改动
+game/game/src/api/request.js	/api → http://42.121.221.244:30083/api
+HomePage.vue	WebSocket :8080 → :30083
+PickPhase.vue	WebSocket :8080 → :30083
+PositionAdjust.vue	WebSocket :8080 → :30083
+BattleLogViewer.vue	WebSocket :8080 → :30083
+TBSApplication.java	CORS 添加 30084 + 30085
+第四步：服务器上构建部署
+
+Bash
+
+# 1. 构建游戏前端
+cd /home/sjd/home/game/Game/game/game
+npm install
+npm run build-only
+
+# 2. 重新构建后端（CORS 改了）
+cd /home/sjd/home/game/Game
+mvn clean package -DskipTests
+sudo systemctl restart tbs
+
+# 3. 重新构建 admin-ui（API 改了）
+cd /home/sjd/home/game/Game/admin-ui
+npm run build
+sudo systemctl restart tbs-admin
+第五步：创建游戏前端 systemd 服务
+
+Bash
+
+sudo nano /etc/systemd/system/tbs-game.service
+
+ini
+
+[Unit]
+Description=TBS Game Frontend
+After=network.target tbs.service
+
+[Service]
+User=root
+WorkingDirectory=/home/sjd/home/game/Game/game/game
+ExecStart=/usr/local/bin/npx serve -s dist -l 30085
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+
+Bash
+
+sudo systemctl daemon-reload
+sudo systemctl enable tbs-game
+sudo systemctl start tbs-game
+sudo systemctl status tbs-game
+
+# 开放端口
+sudo ufw allow 30085/tcp

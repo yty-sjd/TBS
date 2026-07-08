@@ -1,0 +1,64 @@
+1.状态处理器
+2.技能处理器
+初始化
+
+
+处理多个游戏房间同时运行的情况，所以思考多线程的问题
+    在 application.properties 中添加：
+    # 启用虚拟线程处理HTTP请求
+    spring.threads.virtual.enabled=true
+
+
+处理器用注解的形式实现
+
+游戏开始
+Passive:0阵营1号位使用被动change(交换位置和+技力)
+PositionSwap:1阵营1号位与1阵营0号位交换位置
+passive:1阵营2号位使用被动scaveng
+buff:1阵营2号位buff_scaveng 4(不能成为攻击对象，技能对象，群攻，群技能)
+passive:0阵营1号位使用被动pretentiousness
+attack:0阵营0号位attack1阵营0号位，2点伤害值
+damage:1阵营0号位受到1点伤害
+change_hp:1阵营0号位role.hp
+change_currentMana:0阵营0号位role.currentMana
+skill:0阵营0号位使用技能military advisor
+checkSurvival:1阵营0号位阵亡
+add_skill:1阵营1号位获得0阵营1号位技能或被动
+add_passives
+
+
+
+如何添加新角色
+修改数据库，向对应文件添加头像图片，角色立绘，修改HomePage.vue 中的 ASSISTANT_IDS 数组。
+
+需要WebSocket实现联机
+oss默认域名
+https://tbs-yty.oss-cn-guangzhou.aliyuncs.com/
+
+根据改的是哪个项目：
+
+改了游戏前端（game/game/src/ 下的文件）：
+
+
+Bash
+
+cd /home/sjd/home/game/Game/game/game
+npm run build-only
+sudo systemctl restart tbs-game
+改了 admin-ui（admin-ui/src/ 下的文件）：
+
+
+Bash
+
+cd /home/sjd/home/game/Game/admin-ui
+npm run build
+sudo systemctl restart tbs-admin
+改了后端（src/main/java/ 下的文件）：
+
+
+Bash
+
+cd /home/sjd/home/game/Game
+mvn clean package -DskipTests
+sudo systemctl restart tbs
+
