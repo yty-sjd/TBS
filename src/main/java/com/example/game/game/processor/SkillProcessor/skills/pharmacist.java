@@ -6,9 +6,9 @@ import com.example.game.game.Room;
 import com.example.game.game.processor.SkillProcessor.SkillAnnotation;
 
 @SkillAnnotation(skillId = "pharmacist", skillName = "pharmacist", requiredMana = 2)
-public class pharmacist extends Skill {
+public class Pharmacist extends Skill {
 
-    public pharmacist(String skillName, String skillId, int requiredMana, Role role) {
+    public Pharmacist(String skillName, String skillId, int requiredMana, Role role) {
         super(skillName, skillId, requiredMana, role);
     }
 
