@@ -1,4 +1,4 @@
-package com.example.game.Repository;
+package com.example.game.repository;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.example.game.service.tbs_entity.Friend;
+import com.example.game.entity.Friend;
 
 @Repository
 public interface FriendRepository extends JpaRepository<Friend, Integer> {

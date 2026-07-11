@@ -6,7 +6,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Service;
 
-import com.example.game.Repository.RoleRepository;
+import com.example.game.game.Room;
+import com.example.game.repository.RoleRepository;
 
 
 

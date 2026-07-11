@@ -6,10 +6,10 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.game.Repository.FriendRepository;
-import com.example.game.Repository.UserRepository;
-import com.example.game.service.tbs_entity.Friend;
-import com.example.game.service.tbs_entity.User;
+import com.example.game.entity.Friend;
+import com.example.game.entity.User;
+import com.example.game.repository.FriendRepository;
+import com.example.game.repository.UserRepository;
 
 @Service
 public class FriendService {

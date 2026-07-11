@@ -1,11 +1,11 @@
-package com.example.game.Repository;
+package com.example.game.repository;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.game.service.tbs_entity.User;
+import com.example.game.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByUsername(String username);

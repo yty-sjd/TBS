@@ -1,4 +1,4 @@
-package com.example.game.Repository;
+package com.example.game.repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.example.game.service.tbs_entity.RoomInvitation;
+import com.example.game.entity.RoomInvitation;
 
 @Repository
 public interface RoomInvitationRepository extends JpaRepository<RoomInvitation, Integer> {

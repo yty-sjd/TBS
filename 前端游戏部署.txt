@@ -1,7 +1,6 @@
 需要改 6 个文件：API 地址、4 个 WebSocket 地址、CORS。
 
 第一步：改 API 地址
-已Edited 1 files
 
 request.js
 Apply
@@ -11,9 +10,6 @@ const service = axios.create({
   baseURL: 'http://42.121.221.244:30083/api',
   timeout: 60000
 })
-// 请求拦截器
-思考
-Now the 4 WebSocket changes. Let me read each file to get the exact context.
 
 第二步：改 4 个 WebSocket 地址（:8080 → :30083）
 已Edited 4 files
@@ -62,14 +58,11 @@ function connectBattleWs() {
     battleWs.send(JSON.stringify({
       type: 'JOIN_ROOM', roomId: roomId.value, userId: userId.value, side: mySide.value, username: gameState.myUsername
     }))
-思考
-Now the CORS config needs to add 30085.
+
 
 第三步：CORS 添加 30085
-已Edited 2 files, Read 1 files
-所有 diff 汇总：
 
-文件	改动
+
 game/game/src/api/request.js	/api → http://42.121.221.244:30083/api
 HomePage.vue	WebSocket :8080 → :30083
 PickPhase.vue	WebSocket :8080 → :30083
@@ -95,12 +88,6 @@ cd /home/sjd/home/game/Game/admin-ui
 npm run build
 sudo systemctl restart tbs-admin
 第五步：创建游戏前端 systemd 服务
-
-Bash
-
-sudo nano /etc/systemd/system/tbs-game.service
-
-ini
 
 [Unit]
 Description=TBS Game Frontend

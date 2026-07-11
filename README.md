@@ -46,27 +46,64 @@
 
 ```
 ├── src/main/java/com/example/game/      # 后端
-│   ├── controller/                       # REST API 控制器
+│   ├── controller/                       # REST API
+│   │   ├── AuthController.java           # 用户认证
+│   │   ├── GameController.java           # 游戏管理
+│   │   ├── RoomController.java           # 房间管理
+│   │   ├── FriendController.java         # 好友系统
+│   │   └── AdminController.java          # 管理后台
 │   ├── service/                          # 业务逻辑
 │   │   ├── Room.java                     # 房间核心逻辑
+│   │   ├── RoomService.java              # 房间调度
 │   │   ├── AuthService.java              # 用户认证
-│   │   └── processor/                    # 技能 & 被动处理器
-│   ├── websocket/                        # WebSocket 处理
-│   └── Repository/                       # 数据访问层
+│   │   ├── GameService.java              # 游戏服务
+│   │   ├── FriendService.java            # 好友服务
+│   │   ├── processor/                    # 战斗处理器
+│   │   │   ├── SkillProcessor/           # 主动技能
+│   │   │   │   ├── skills/               # 10+ 技能实现
+│   │   │   │   └── SkillExecutor.java
+│   │   │   ├── PassiveProcessor/         # 被动技能
+│   │   │   │   ├── passives/             # 18 个被动实现
+│   │   │   │   └── AutoPassiveExecutor.java
+│   │   │   ├── AttackProcessor.java      # 攻击计算
+│   │   │   ├── DamageProcessor.java      # 伤害结算
+│   │   │   ├── ActionProcessor.java      # 行动调度
+│   │   │   ├── SurvivalChecker.java      # 存活判定
+│   │   │   └── StateProcessor.java       # 状态管理
+│   │   └── tbs_entity/                   # 实体类
+│   │       ├── User.java
+│   │       ├── Role.java
+│   │       ├── Friend.java
+│   │       └── skill/Skill.java
+│   ├── websocket/                        # WebSocket
+│   │   └── GameWebSocketHandler.java
+│   ├── config/                           # 配置
+│   │   └── WebSocketConfig.java
+│   ├── Repository/                       # 数据访问层
+│   └── TBSApplication.java               # 启动入口
 ├── game/game/src/                        # 游戏前端
 │   ├── components/                       # 页面组件
 │   │   ├── Login.vue                     # 登录 / 注册
 │   │   ├── HomePage.vue                  # 大厅 & 房间
 │   │   ├── PickPhase.vue                 # 选将阶段
 │   │   ├── PositionAdjust.vue            # 调位阶段
-│   │   └── BattleLogViewer.vue           # 战斗回放
+│   │   ├── BattleLogViewer.vue           # 战斗回放
+│   │   ├── BattleRoleCard.vue            # 角色卡牌
+│   │   ├── AccountManage.vue             # 账号管理
+│   │   └── FriendsPage.vue               # 好友页面
 │   ├── composables/                      # 组合式函数
 │   │   ├── useGameState.js               # 游戏状态管理
 │   │   ├── useBattleLog.js               # 战斗日志解析
-│   │   └── useClickSound.js              # 音效管理
+│   │   ├── useClickSound.js              # 音效管理
+│   │   ├── useParticleEffect.js          # 粒子特效
+│   │   └── useProjectile.js              # 弹道特效
 │   ├── api/                              # 接口封装
-│   └── router/                           # 路由配置
-├── admin-ui/src/                         # 管理后台前端
+│   ├── router/                           # 路由守卫
+│   ├── config/                           # 配置（CDN、技能名）
+│   └── utils/                            # 工具（日志解析）
+├── admin-ui/src/                         # 管理后台
+│   ├── components/RoleManagement.vue     # 角色管理
+│   └── api/                              # 接口封装
 └── pom.xml                               # Maven 配置
 ```
 

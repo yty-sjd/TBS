@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.game.entity.Role;
+import com.example.game.game.Room;
 import com.example.game.service.GameService;
-import com.example.game.service.Room;
-import com.example.game.service.tbs_entity.Role;
 
 @RestController
 @RequestMapping("/api/game")

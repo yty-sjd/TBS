@@ -7,10 +7,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.game.Repository.RoomInvitationRepository;
-import com.example.game.Repository.UserRepository;
-import com.example.game.service.tbs_entity.RoomInvitation;
-import com.example.game.service.tbs_entity.User;
+import com.example.game.entity.RoomInvitation;
+import com.example.game.entity.User;
+import com.example.game.repository.RoomInvitationRepository;
+import com.example.game.repository.UserRepository;
 
 @Service
 public class RoomService {

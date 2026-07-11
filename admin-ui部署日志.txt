@@ -1,5 +1,4 @@
 第一步：改 API 地址
-已Edited 1 files
 
 // request.js
 // Apply
@@ -13,8 +12,6 @@
 
 第二步：构建
 
-Bash
-
 cd /home/sjd/home/game/Game/admin-ui
 
 # 安装依赖（如果还没装）
@@ -24,11 +21,7 @@ npm install
 npm run build
 第三步：创建 systemd 服务
 
-Bash
-
 sudo nano /etc/systemd/system/tbs-admin.service
-
-ini
 
 [Unit]
 Description=TBS Admin UI
@@ -44,8 +37,6 @@ RestartSec=10
 [Install]
 WantedBy=multi-user.target
 第四步：启动
-
-Bash
 
 sudo systemctl daemon-reload
 sudo systemctl enable tbs-admin

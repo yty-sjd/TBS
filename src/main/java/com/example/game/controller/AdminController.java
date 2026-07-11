@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.game.Repository.RoleRepository;
-import com.example.game.service.tbs_entity.Role;
+import com.example.game.entity.Role;
+import com.example.game.repository.RoleRepository;
 
 @RestController
 @RequestMapping("/api/admin")
