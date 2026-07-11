@@ -47,40 +47,43 @@
 ```
 ├── src/main/java/com/example/game/      # 后端
 │   ├── controller/                       # REST API
-│   │   ├── AuthController.java           # 用户认证
-│   │   ├── GameController.java           # 游戏管理
-│   │   ├── RoomController.java           # 房间管理
-│   │   ├── FriendController.java         # 好友系统
-│   │   └── AdminController.java          # 管理后台
 │   ├── service/                          # 业务逻辑
+│   │   ├── RoomService.java              
+│   │   ├── AuthService.java              
+│   │   ├── GameService.java              
+│   │   └── FriendService.java            
+│   ├── entity/                           # 实体类
+│   │   ├── User.java
+│   │   ├── Role.java
+│   │   ├── Friend.java
+│   │   ├── RoomInvitation.java
+│   │   └── Skill.java
+│   ├── repository/                       # 数据访问层
+│   │   ├── UserRepository.java
+│   │   ├── RoleRepository.java
+│   │   ├── FriendRepository.java
+│   │   └── RoomInvitationRepository.java
+│   ├── game/                             # 游戏核心
 │   │   ├── Room.java                     # 房间核心逻辑
-│   │   ├── RoomService.java              # 房间调度
-│   │   ├── AuthService.java              # 用户认证
-│   │   ├── GameService.java              # 游戏服务
-│   │   ├── FriendService.java            # 好友服务
-│   │   ├── processor/                    # 战斗处理器
-│   │   │   ├── SkillProcessor/           # 主动技能
-│   │   │   │   ├── skills/               # 10+ 技能实现
-│   │   │   │   └── SkillExecutor.java
-│   │   │   ├── PassiveProcessor/         # 被动技能
-│   │   │   │   ├── passives/             # 18 个被动实现
-│   │   │   │   └── AutoPassiveExecutor.java
-│   │   │   ├── AttackProcessor.java      # 攻击计算
-│   │   │   ├── DamageProcessor.java      # 伤害结算
-│   │   │   ├── ActionProcessor.java      # 行动调度
-│   │   │   ├── SurvivalChecker.java      # 存活判定
-│   │   │   └── StateProcessor.java       # 状态管理
-│   │   └── tbs_entity/                   # 实体类
-│   │       ├── User.java
-│   │       ├── Role.java
-│   │       ├── Friend.java
-│   │       └── skill/Skill.java
-│   ├── websocket/                        # WebSocket
-│   │   └── GameWebSocketHandler.java
-│   ├── config/                           # 配置
-│   │   └── WebSocketConfig.java
-│   ├── Repository/                       # 数据访问层
-│   └── TBSApplication.java               # 启动入口
+│   │   ├── StateProcessor.java           # 状态管理
+│   │   ├── ActionProcessor.java          # 行动调度
+│   │   ├── AttackProcessor.java          # 攻击计算
+│   │   ├── DamageProcessor.java          # 伤害结算
+│   │   ├── SurvivalChecker.java          # 存活判定
+│   │   ├── PositionSwapProcessor.java    # 位置交换
+│   │   └── processor/                    # 技能处理器
+│   │       ├── SkillProcessor/           # 主动技能
+│   │       │   ├── skills/               # 10 个技能实现
+│   │       │   ├── SkillExecutor.java
+│   │       │   └── SkillAnnotation.java
+│   │       └── PassiveProcessor/         # 被动技能
+│   │           ├── passives/             # 18 个被动实现
+│   │           ├── AutoPassiveExecutor.java
+│   │           ├── Passive.java
+│   │           └── PassiveEffect.java
+│   ├── websocket/                        
+│   ├── config/                           
+│   └── TBSApplication.java               
 ├── game/game/src/                        # 游戏前端
 │   ├── components/                       # 页面组件
 │   │   ├── Login.vue                     # 登录 / 注册
